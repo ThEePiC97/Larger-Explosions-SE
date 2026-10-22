@@ -14,29 +14,41 @@ jobs:
 
       - name: Restore and Build
         run: |
-          # Use netstandard2.0 instead of net48 for compatibility
-          dotnet new classlib -n LargerExplosionsSE -f netstandard2.0 -o build_dir
+          # 1. Create the build directory
+          mkdir build_dir
+          
+          # 2. Create the .csproj file from scratch to avoid "multiple root elements" error
+          @'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <TargetFramework>netstandard2.0</TargetFramework>
+              <ImplicitUsings>enable</ImplicitUsings>
+              <Nullable>disable</Nullable>
+            </PropertyGroup>
+            <ItemGroup>
+              <Reference Include="Sandbox.Game">
+                <HintPath>../libs/Sandbox.Game.dll</HintPath>
+              </Reference>
+              <Reference Include="VRage.Game">
+                <HintPath>../libs/VRage.Game.dll</HintPath>
+              </Reference>
+              <Reference Include="VRage">
+                <HintPath>../libs/VRage.dll</HintPath>
+              </Reference>
+              <Reference Include="VRageMath">
+                <HintPath>../libs/VRageMath.dll</HintPath>
+              </Reference>
+              <Reference Include="0Harmony">
+                <HintPath>../libs/0Harmony.dll</HintPath>
+              </Reference>
+            </ItemGroup>
+          </Project>
+          '@ | Out-File -FilePath build_dir/LargerExplosionsSE.csproj -Encoding utf8
+
+          # 3. Copy the source code into the build directory
           cp src/LargerExplosionsSE.cs build_dir/LargerExplosionsSE.cs
           
-          # Adding the references using absolute paths based on the repo structure
-          echo '<ItemGroup>
-            <Reference Include="Sandbox.Game">
-              <HintPath>../libs/Sandbox.Game.dll</HintPath>
-            </Reference>
-            <Reference Include="VRage.Game">
-              <HintPath>../libs/VRage.Game.dll</HintPath>
-            </Reference>
-            <Reference Include="VRage">
-              <HintPath>../libs/VRage.dll</HintPath>
-            </Reference>
-            <Reference Include="VRageMath">
-              <HintPath>../libs/VRageMath.dll</HintPath>
-            </Reference>
-            <Reference Include="0Harmony">
-              <HintPath>../libs/0Harmony.dll</HintPath>
-            </Reference>
-          </ItemGroup>' >> build_dir/LargerExplosionsSE.csproj
-          
+          # 4. Build the project
           dotnet build build_dir/LargerExplosionsSE.csproj -c Release
 
       - name: Upload Artifact
