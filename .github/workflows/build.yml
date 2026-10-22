@@ -1,0 +1,25 @@
+name: Build Plugin
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore and Build
+        run: |
+          dotnet new classlib -n LargerExplosionsSE -f net48 -o build_dir
+          cp src/LargerExplosionsSE.cs build_dir/LargerExplosionsSE.cs
+          dotnet build build_dir/LargerExplosionsSE.csproj -c Release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LargerExplosionsSE-DLL
+          path: build_dir/bin/Release/net48/LargerExplosionsSE.dll
