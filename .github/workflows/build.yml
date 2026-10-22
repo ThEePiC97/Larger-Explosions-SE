@@ -16,13 +16,16 @@ jobs:
         run: |
           mkdir build_dir
           
+          # Create the project file with the correct .NET Framework target
           @'
           <Project Sdk="Microsoft.NET.Sdk">
             <PropertyGroup>
-              <TargetFramework>netstandard2.0</TargetFramework>
+              <AssemblyName>LargerExplosionsSE</AssemblyName>
+              <TargetFramework>net472</TargetFramework>
               <ImplicitUsings>disable</ImplicitUsings>
               <Nullable>disable</Nullable>
               <LangVersion>latest</LangVersion>
+              <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
             </PropertyGroup>
             <ItemGroup>
               <Reference Include="Sandbox.Game">
@@ -44,12 +47,15 @@ jobs:
           </Project>
           '@ | Out-File -FilePath build_dir/LargerExplosionsSE.csproj -Encoding utf8
 
-          cp src/LargerExplosionsSE.cs build_dir/LargerExplosionsSE.cs
-          
-          dotnet build build_dir/LargerExplosionsSE.csproj -c Release
+          # Copy source files into the build directory
+          cp src/*.cs build_dir/
 
+          # Build the project
+          dotnet build build_dir/LargerExplosionsSE.csproj -c Release
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: LargerExplosionsSE-DLL
-          path: build_dir/bin/Release/netstandard2.0/LargerExplosionsSE.dll
+          # Updated path to match the net472 build output
+          path: build_dir/bin/Release/net472/LargerExplosionsSE.dll
