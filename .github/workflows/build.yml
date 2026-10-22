@@ -14,25 +14,26 @@ jobs:
 
       - name: Restore and Build
         run: |
-          dotnet new classlib -n LargerExplosionsSE -f net48 -o build_dir
+          # Use netstandard2.0 instead of net48 for compatibility
+          dotnet new classlib -n LargerExplosionsSE -f netstandard2.0 -o build_dir
           cp src/LargerExplosionsSE.cs build_dir/LargerExplosionsSE.cs
           
-          # This part is the key: it adds the references to the project file manually
+          # Adding the references using absolute paths based on the repo structure
           echo '<ItemGroup>
             <Reference Include="Sandbox.Game">
-              <HintPath>../../libs/Sandbox.Game.dll</HintPath>
+              <HintPath>../libs/Sandbox.Game.dll</HintPath>
             </Reference>
             <Reference Include="VRage.Game">
-              <HintPath>../../libs/VRage.Game.dll</HintPath>
+              <HintPath>../libs/VRage.Game.dll</HintPath>
             </Reference>
             <Reference Include="VRage">
-              <HintPath>../../libs/VRage.dll</HintPath>
+              <HintPath>../libs/VRage.dll</HintPath>
             </Reference>
             <Reference Include="VRageMath">
-              <HintPath>../../libs/VRageMath.dll</HintPath>
+              <HintPath>../libs/VRageMath.dll</HintPath>
             </Reference>
             <Reference Include="0Harmony">
-              <HintPath>../../libs/0Harmony.dll</HintPath>
+              <HintPath>../libs/0Harmony.dll</HintPath>
             </Reference>
           </ItemGroup>' >> build_dir/LargerExplosionsSE.csproj
           
@@ -42,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: LargerExplosionsSE-DLL
-          path: build_dir/bin/Release/net48/LargerExplosionsSE.dll
+          path: build_dir/bin/Release/netstandard2.0/LargerExplosionsSE.dll
