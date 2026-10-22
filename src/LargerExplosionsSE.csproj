@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>LargerExplosionsSE</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- These refer to the game DLLs that must be present during build -->
+    <!-- In GitHub Actions, you'll need to make sure these are in the build environment -->
+    <Reference Include="Sandbox.Game">
+      <HintPath>bin64/Sandbox.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="VRage.Math">
+      <HintPath>bin64/VRage.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>bin64/0Harmony.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
