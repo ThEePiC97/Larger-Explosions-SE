@@ -34,8 +34,8 @@ jobs:
               <Reference Include="VRage">
                 <HintPath>../libs/VRage.dll</HintPath>
               </Reference>
-              <Reference Include="VRageMath">
-                <HintPath>../libs/VRageMath.dll</HintPath>
+              <Reference Include="VRage.Math">
+                <HintPath>../libs/VRage.Math.dll</HintPath>
               </Reference>
               <Reference Include="0Harmony">
                 <HintPath>../libs/0Harmony.dll</HintPath>
