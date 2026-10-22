@@ -5,10 +5,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4 # Updated from v3
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4 # Updated from v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
 
@@ -16,10 +16,30 @@ jobs:
         run: |
           dotnet new classlib -n LargerExplosionsSE -f net48 -o build_dir
           cp src/LargerExplosionsSE.cs build_dir/LargerExplosionsSE.cs
+          
+          # This part is the key: it adds the references to the project file manually
+          echo '<ItemGroup>
+            <Reference Include="Sandbox.Game">
+              <HintPath>../../libs/Sandbox.Game.dll</HintPath>
+            </Reference>
+            <Reference Include="VRage.Game">
+              <HintPath>../../libs/VRage.Game.dll</HintPath>
+            </Reference>
+            <Reference Include="VRage">
+              <HintPath>../../libs/VRage.dll</HintPath>
+            </Reference>
+            <Reference Include="VRageMath">
+              <HintPath>../../libs/VRageMath.dll</HintPath>
+            </Reference>
+            <Reference Include="0Harmony">
+              <HintPath>../../libs/0Harmony.dll</HintPath>
+            </Reference>
+          </ItemGroup>' >> build_dir/LargerExplosionsSE.csproj
+          
           dotnet build build_dir/LargerExplosionsSE.csproj -c Release
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4 # Updated from v3
+        uses: actions/upload-artifact@v4
         with:
           name: LargerExplosionsSE-DLL
           path: build_dir/bin/Release/net48/LargerExplosionsSE.dll
