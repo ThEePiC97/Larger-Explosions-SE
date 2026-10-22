@@ -1,9 +1,9 @@
 {
-  "Name": "NuclearWarheadPatch",
+  "Name": "LargerExplosionsSE",
   "Version": "1.0.0",
-  "Author": "ThEePiC97",
+  "Author": "Tyler",
   "Description": "Removes the 30m blast radius cap for warheads to enable nuclear-scale explosions.",
-  "EntryPoint": "NuclearWarheadPatch.Loader::Init",
+  "EntryPoint": "LargerExplosionsSE.Loader::Init",
   "Dependencies": {
     "Harmony": "2.2.0"
   }
