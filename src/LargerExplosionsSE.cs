@@ -5,16 +5,31 @@ using Sandbox.Game.Entities.Cube;
 using VRage.Game.Components;
 using VRageMath;
 using System.Collections.Generic;
+using VRage.Plugins; // <--- IMPORTANT: Added for IPlugin
 
 namespace LargerExplosionsSE
 {
-    public class Loader
+    // Changed from a simple class to implementing IPlugin and IDisposable
+    public class Loader : IPlugin, IDisposable
     {
-        public static void Init()
+        // This is the method the loader actually looks for
+        public void Init(object gameInstance)
         {
             var harmony = new Harmony("com.larger.explosions.patch");
             harmony.PatchAll();
+            
+            // Pulsar usually captures Console.WriteLine, but Debug is safer for logs
             Console.WriteLine("[LargerExplosionsSE] Harmony patch applied: Blast radius cap removed!");
+        }
+
+        // Required by IPlugin interface
+        public void Update()
+        {
+        }
+
+        // Required by IDisposable interface
+        public void Dispose()
+        {
         }
     }
 
